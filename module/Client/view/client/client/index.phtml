@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="well">
+
+        <h2>Formulaire de réservation</h2>
+        <br>
+        <?php
+        foreach ($restaurants as $restaurant) :
+            echo "pour le " . implode('-', array_reverse(explode('-', $this->escapeHtml($restaurant->date))));
+            echo ", il reste " . $this->escapeHtml($restaurant->nb_place) . " places.<br>";
+        endforeach;
+
+        $form = $this->form;
+        $form->prepare();
+        ?>
+        <div class="form-group">
+            <?php
+            echo $this->form()->openTag($form);
+            echo $this->formHidden($form->get('id'));
+            ?>
+            <input type="hidden" name="nb_place" value="<?php echo (int) $restaurant->nb_place; ?>" />
+            <input type="hidden" name="date_restaurant" value="<?php echo $restaurant->date; ?>" />
+            <?php
+            echo "<label>Choisissez votre date :</label>" . $this->formDate($form->get('date'));
+            echo $this->formSubmit($form->get('submit'));
+            ?>
+        </div>    
+        <?php echo $this->form()->closeTag(); ?>
+    </div>
+</div>
+
+<?php if (count($flashMessages)) : ?>
+
+    <?php foreach ($flashMessages as $msg) : ?>
+        <div class="alert alert-info col-md-6 col-md-offset-3 alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <span class="glyphicon glyphicon-exclamation-sign"></span> <?php echo $msg; ?>
+        </div>
+        <?php
+    endforeach;
+endif;
+?>
